@@ -1,0 +1,21 @@
+{
+  "switchykit.general": "",
+  "commands.switchykit.confirm.prompt": "[SwitchyKit]   Run %s to confirm.",
+  "commands.switchykit.confirm.fail": "[SwitchyKit] There's no queued action to execute.",
+  "commands.switchykit.import.success": "[SwitchyKit] Import successful. Created %s presets, updated %s presets.",
+
+  "switchykit.platform.pk": "",
+  "commands.switchykit.pk.token": "[SwitchyKit] Only give out your PK token to servers you trust",
+  "commands.switchykit.pk.token.confirm": "[SwitchyKit] Token updated.",
+  "commands.switchykit.pk.token.clear": "[SwitchyKit] Are you sure you want to clear your token?",
+  "commands.switchykit.pk.token.clear.confirm": "[SwitchyKit] Token cleared.",
+  "commands.switchykit.pk.import.wait": "[SwitchyKit] Importing from PluralKit...",
+  "commands.switchykit.pk.import.fail": "[SwitchyKit] Failed to import from PK: %s",
+  "commands.switchykit.pk.import.fail.token": "[SwitchyKit] You have no token registered. Run either %s to set a token, or rerun %s while appending a link to a JSON file.",
+
+  "switchykit.platform.tul": "",
+  "commands.switchykit.tul.import.wait": "[SwitchyKit] Importing from TupperBox...",
+
+  "switchykit.platform.pf": ""
+
+}

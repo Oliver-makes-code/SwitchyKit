@@ -1,11 +1,12 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.example.example_mod.mixin",
+  "package": "de.olivermakesco.switchykit.mixin",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [],
+  "mixins": [
+    "Mixin_PlayerEntity"
+  ],
   "client": [
-    "TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

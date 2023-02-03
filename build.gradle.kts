@@ -8,6 +8,7 @@ plugins {
 	`maven-publish`
 
 	alias(libs.plugins.kotlin)
+	alias(libs.plugins.kxser)
 	alias(libs.plugins.quilt.loom)
 }
 
@@ -22,6 +23,7 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
+	maven("https://maven.proxyfox.dev/")
 }
 
 // All the dependencies are declared at gradle/libs.version.toml and referenced with "libs.<id>"
@@ -34,25 +36,15 @@ dependencies {
 		}
 	)
 
-	// Replace the above line with the block below if you want to use Mojang mappings as your primary mappings, falling back on QM for parameters and Javadocs
-	/*
-	mappings(
-		loom.layered {
-			mappings(variantOf(libs.quilt.mappings) { classifier("intermediary-v2") })
-			officialMojangMappings()
-		}
-	)
-	*/
-
 	modImplementation(libs.quilt.loader)
 
 
-	// QSL is not a complete API; You will need Quilted Fabric API to fill in the gaps.
-	// Quilted Fabric API will automatically pull in the correct QSL version.
 	modImplementation(libs.qfapi)
-	// modImplementation(libs.bundles.qfapi) // If you wish to use the deprecated Fabric API modules
-
 	modImplementation(libs.qkl)
+	modImplementation(libs.switchy)
+	modImplementation(libs.switchy.compat)
+	implementation(libs.pluralkt)
+	include(libs.pluralkt)
 }
 
 tasks {
