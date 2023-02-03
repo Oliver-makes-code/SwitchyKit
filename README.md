@@ -2,6 +2,8 @@
 
 A Switchy addon adding support for importing from PluralKit and TupperBox
 
+Requires Quilt Kotlin Libraries
+
 ## Commands
 
 - `/skit-confirm` - Confirms the queued action
