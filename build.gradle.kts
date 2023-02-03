@@ -5,7 +5,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
 	java
-	`maven-publish`
 
 	alias(libs.plugins.kotlin)
 	alias(libs.plugins.kxser)
@@ -14,6 +13,8 @@ plugins {
 
 val archives_base_name: String by project
 base.archivesName.set(archives_base_name)
+
+val shade = configurations.create("shade")
 
 val javaVersion = 17
 
@@ -36,15 +37,18 @@ dependencies {
 		}
 	)
 
-	modImplementation(libs.quilt.loader)
+	modCompileOnly(libs.quilt.loader)
 
-
-	modImplementation(libs.qfapi)
-	modImplementation(libs.qkl)
-	modImplementation(libs.switchy)
-	modImplementation(libs.switchy.compat)
+	modCompileOnly(libs.qfapi)
+	modCompileOnly(libs.qkl)
+	modCompileOnly(libs.switchy)
+	modCompileOnly(libs.switchy.compat)
 	implementation(libs.pluralkt)
-	include(libs.pluralkt)
+	shade(libs.pluralkt) {
+		exclude(group="org.jetbrains.kotlin")
+		exclude(group="org.jetbrains.kotlinx")
+		exclude(group="org.slf4j")
+	}
 }
 
 tasks {
@@ -72,6 +76,12 @@ tasks {
 					"version" to project.version
 				)
 			)
+		}
+		shade.forEach {
+			val tree = zipTree(it)
+			from(tree) {
+				duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+			}
 		}
 	}
 
@@ -113,21 +123,4 @@ java {
 	// Still required by IDEs such as Eclipse and VSC
 	sourceCompatibility = targetJavaVersion
 	targetCompatibility = targetJavaVersion
-}
-
-// Configure the maven publication
-publishing {
-	publications {
-		register<MavenPublication>("Maven") {
-			from(components.getByName("java"))
-		}
-	}
-
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
-	}
 }

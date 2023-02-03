@@ -2,10 +2,10 @@
 kotlin = "1.8.0"
 
 minecraft = "1.19.3"
-qfapi = "5.0.0-alpha.9+0.72.0-1.19.3"
-qkl = "1.1.0+kt.1.8.0+flk.1.9.0"
+qfapi = "4.0.0-beta.27+0.73.0-1.19.2"
+qkl = "1.0.2+kt.1.8.0+flk.1.9.0"
 loader = "0.17.8"
-mappings = "1.19.3+build.9"
+mappings = "1.19.2+build.21"
 loom = "1.+"
 
 switchy = "1.8.6+1.19"
