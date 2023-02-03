@@ -25,7 +25,7 @@ var CommandContext<ServerCommandSource>.enqueuedAction
     set(value) { switchyKitPlayer.`SwitchyKit - EnqueuedAction` = value }
 fun CommandContext<ServerCommandSource>.reply(translationKey: String, vararg params: MutableText) {
     player.sendMessage(
-        Feedback.translatableWithArgs(translationKey, *params),
+        "[SwitchyKit] ".text.withColor(Formatting.AQUA.colorValue!!).append(Feedback.translatableWithArgs(translationKey, *params)),
         false
     )
 }
