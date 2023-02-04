@@ -1,10 +1,10 @@
 {
-  "switchykit.general": "",
+  "switchykit.general": "General",
   "commands.switchykit.confirm.prompt": "  Run %s to confirm.",
   "commands.switchykit.confirm.fail": "There's no queued action to execute.",
   "commands.switchykit.import.success": "Import successful. Created %s presets, updated %s presets.",
 
-  "switchykit.platform.pk": "",
+  "switchykit.platform.pk": "PluralKit",
   "commands.switchykit.pk.token": "Only give out your PK token to servers you trust",
   "commands.switchykit.pk.token.confirm": "Token updated.",
   "commands.switchykit.pk.token.clear": "Are you sure you want to clear your token?",
@@ -13,9 +13,9 @@
   "commands.switchykit.pk.import.fail": "Failed to import from PK: %s",
   "commands.switchykit.pk.import.fail.token": "You have no token registered. Run either %s to set a token, or rerun %s while appending a link to a JSON file.",
 
-  "switchykit.platform.tul": "",
+  "switchykit.platform.tul": "TupperBox",
   "commands.switchykit.tul.import.wait": "Importing from TupperBox...",
 
-  "switchykit.platform.pf": ""
+  "switchykit.platform.pf": "ProxyFox"
 
 }

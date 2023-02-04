@@ -63,7 +63,7 @@ fun import(system: MinimalSystemJson, oldPresets: SwitchyPresets, player: Server
 
 
         val preset = SwitchyPreset(name, mapOf())
-        val bio = "${member.pronouns} ${system.tag}".trim()
+        val bio = "${member.pronouns ?: ""} ${system.tag ?: ""}".trim()
         if (oldPresets.modules["switchy"*"drogtor"] == true) {
             val drogtor = DrogtorCompat()
             drogtor.nickname = member.displayName
@@ -74,7 +74,13 @@ fun import(system: MinimalSystemJson, oldPresets: SwitchyPresets, player: Server
 
         if (oldPresets.modules["switchy"*"styled_nicknames"] == true) {
             val styled = StyledNicknamesCompat()
-            styled.styled_nickname = "<hover:'$bio'><color:${member.color?.hex}>${member.displayName}"
+            var nick = member.displayName ?: member.name
+            if (bio.isNotEmpty())
+                nick = "<hover:'$bio'>$nick</hover>"
+            val hex = member.color?.hex
+            if (!hex.isNullOrEmpty())
+                nick = "<color:$hex>$nick</color>"
+            styled.styled_nickname = nick
             preset.compatModules["switchy"*"styled_nicknames"] = styled
         }
 
