@@ -25,6 +25,9 @@ repositories {
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
 	maven("https://maven.proxyfox.dev/")
+	maven("https://maven.wispforest.io") // Switchy Client Dep - OWO-UI
+	maven("https://repo.sleeping.town") // Switchy Core Dep - Lib39 Dessicant (blame loom for this one)
+	maven("https://maven.nucleoid.xyz/") // Switchy Core Dep - Server Translations API (blame loom for this one)
 }
 
 // All the dependencies are declared at gradle/libs.version.toml and referenced with "libs.<id>"
