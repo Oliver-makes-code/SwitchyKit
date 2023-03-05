@@ -2,12 +2,14 @@ package de.olivermakesco.switchykit
 
 import de.olivermakesco.switchykit.platform.PK
 import de.olivermakesco.switchykit.platform.TUL
+import folk.sisby.switchy.SwitchyCommands
 import folk.sisby.switchy.api.presets.SwitchyPreset
 import folk.sisby.switchy.api.presets.SwitchyPresets
 import folk.sisby.switchy.modules.DrogtorCompat
 import folk.sisby.switchy.modules.StyledNicknamesCompat
 import folk.sisby.switchy.presets.SwitchyPresetImpl
 import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.util.Identifier
 import org.quiltmc.loader.api.ModContainer
 import org.quiltmc.qkl.library.brigadier.execute
 import org.quiltmc.qkl.library.brigadier.register
@@ -41,20 +43,16 @@ object SwitchyKit : ModInitializer {
 
 val regex = Regex("[a-z0-9_\\-.+]", RegexOption.IGNORE_CASE)
 
-fun import(system: MinimalSystemJson, oldPresets: SwitchyPresets, player: ServerPlayerEntity, reportSuccess: (Int, Int) -> Unit) {
-    var created = 0
-    var updated = 0
+fun import(system: MinimalSystemJson, oldPresets: SwitchyPresets, player: ServerPlayerEntity, command: String) {
     val updatedPresets = hashMapOf<String, SwitchyPreset>()
+    val modules = mutableListOf<Identifier>();
+    if (oldPresets.modules["switchy"*"drogtor"] == true) modules += "switchy"*"drogtor"
+    if (oldPresets.modules["switchy"*"styled_nicknames"] == true) modules += "switchy"*"styled_nicknames"
+
     for (member in system.members) {
         val name = member.name.filter {
             regex.matches("$it")
         }
-        if (!oldPresets.presetNames.contains(name)) {
-            created++
-        } else {
-            updated++
-        }
-
 
         val preset = SwitchyPresetImpl(name, mapOf())
         val bio = "${member.pronouns ?: ""} ${system.tag ?: ""}".trim()
@@ -80,6 +78,5 @@ fun import(system: MinimalSystemJson, oldPresets: SwitchyPresets, player: Server
 
         updatedPresets[name] = preset
     }
-    oldPresets.importFromOther(player, updatedPresets)
-    reportSuccess(created, updated)
+    SwitchyCommands.confirmAndImportPresets(player, updatedPresets, modules, command)
 }
