@@ -2,25 +2,19 @@ package de.olivermakesco.switchykit
 
 import de.olivermakesco.switchykit.platform.PK
 import de.olivermakesco.switchykit.platform.TUL
-import dev.proxyfox.pluralkt.PluralKt
+import folk.sisby.switchy.api.presets.SwitchyPreset
+import folk.sisby.switchy.api.presets.SwitchyPresets
 import folk.sisby.switchy.modules.DrogtorCompat
 import folk.sisby.switchy.modules.StyledNicknamesCompat
-import folk.sisby.switchy.presets.SwitchyPreset
-import folk.sisby.switchy.presets.SwitchyPresets
-import kotlinx.serialization.decodeFromString
-import net.minecraft.nbt.NbtCompound
+import folk.sisby.switchy.presets.SwitchyPresetImpl
 import net.minecraft.server.network.ServerPlayerEntity
 import org.quiltmc.loader.api.ModContainer
-import org.quiltmc.qkl.library.brigadier.argument.greedyString
-import org.quiltmc.qkl.library.brigadier.argument.literal
 import org.quiltmc.qkl.library.brigadier.execute
 import org.quiltmc.qkl.library.brigadier.register
-import org.quiltmc.qkl.library.brigadier.required
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer
 import org.quiltmc.qsl.command.api.CommandRegistrationCallback
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.net.URL
 
 val logger: Logger = LoggerFactory.getLogger("SwitchyKit")
 
@@ -62,14 +56,14 @@ fun import(system: MinimalSystemJson, oldPresets: SwitchyPresets, player: Server
         }
 
 
-        val preset = SwitchyPreset(name, mapOf())
+        val preset = SwitchyPresetImpl(name, mapOf())
         val bio = "${member.pronouns ?: ""} ${system.tag ?: ""}".trim()
         if (oldPresets.modules["switchy"*"drogtor"] == true) {
             val drogtor = DrogtorCompat()
             drogtor.nickname = member.displayName
             drogtor.bio = bio
-            drogtor.namecolor = member.color?.closestFormat()
-            preset.compatModules["switchy"*"drogtor"] = drogtor
+            drogtor.nameColor = member.color?.closestFormat()
+            preset.putModule("switchy"*"drogtor", drogtor)
         }
 
         if (oldPresets.modules["switchy"*"styled_nicknames"] == true) {
@@ -81,7 +75,7 @@ fun import(system: MinimalSystemJson, oldPresets: SwitchyPresets, player: Server
             if (!hex.isNullOrEmpty())
                 nick = "<color:$hex>$nick</color>"
             styled.styled_nickname = nick
-            preset.compatModules["switchy"*"styled_nicknames"] = styled
+            preset.putModule("switchy"*"styled_nicknames", styled)
         }
 
         updatedPresets[name] = preset
