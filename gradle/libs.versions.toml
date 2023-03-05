@@ -9,7 +9,7 @@ mappings = "1.19.2+build.21"
 loom = "1.+"
 
 switchy = "2.0.0-beta.1+1.19"
-switchy_proxy = "1.1.0+1.19"
+switchy_proxy = "1.1.1+1.19"
 pluralkt = "1.7"
 kxser = "1.8.0"
 
