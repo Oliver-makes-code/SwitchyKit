@@ -8,7 +8,8 @@ loader = "0.17.8"
 mappings = "1.19.2+build.21"
 loom = "1.+"
 
-switchy = "1.8.6+1.19"
+switchy = "2.0.0-beta.2+1.19"
+switchy_proxy = "1.1.1+1.19"
 pluralkt = "1.7"
 kxser = "1.8.0"
 
@@ -23,7 +24,9 @@ quilt_loader = { module = "org.quiltmc:quilt-loader", version.ref = "loader" }
 quilt_mappings = { module = "org.quiltmc:quilt-mappings", version.ref = "mappings" }
 
 switchy = { module = "folk.sisby:switchy-core", version.ref = "switchy" }
+switchy_client = { module = "folk.sisby:switchy-client", version.ref = "switchy" }
 switchy_compat = { module = "folk.sisby:switchy-compat", version.ref = "switchy" }
+switchy_proxy = { module = "folk.sisby:switchy-proxy", version.ref = "switchy_proxy" }
 pluralkt = { module = "dev.proxyfox:pluralkt", version.ref = "pluralkt" }
 
 [bundles]

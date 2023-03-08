@@ -41,12 +41,8 @@
 				"versions": ">=1.19.2"
 			},
 			{
-				"id": "switchy-core",
-				"versions": ">=1.8.6"
-			},
-			{
 				"id": "switchy-compat",
-				"versions": ">=1.8.6"
+				"versions": ">=2.0.0-"
 			}
 		]
 	},

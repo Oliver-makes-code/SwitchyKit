@@ -35,9 +35,7 @@ object TUL {
                         import(
                             MinimalSystemJson(
                             null, members.toTypedArray()
-                        ), oldPresets, player) { created, updated ->
-                            ratio("commands.switchykit.import.success", created, updated)
-                        }
+                        ), oldPresets, player, "tul import $link")
                     }
                 }
             }
