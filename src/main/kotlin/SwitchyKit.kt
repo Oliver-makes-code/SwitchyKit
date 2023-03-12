@@ -2,12 +2,13 @@ package de.olivermakesco.switchykit
 
 import de.olivermakesco.switchykit.platform.PK
 import de.olivermakesco.switchykit.platform.TUL
-import folk.sisby.switchy.SwitchyCommands
+import folk.sisby.switchy.api.SwitchyApi
 import folk.sisby.switchy.api.presets.SwitchyPreset
 import folk.sisby.switchy.api.presets.SwitchyPresets
-import folk.sisby.switchy.modules.DrogtorCompat
-import folk.sisby.switchy.modules.StyledNicknamesCompat
+import folk.sisby.switchy.modules.DrogtorModule
+import folk.sisby.switchy.modules.StyledNicknamesModule
 import folk.sisby.switchy.presets.SwitchyPresetImpl
+import folk.sisby.switchy.util.Feedback
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.Identifier
 import org.quiltmc.loader.api.ModContainer
@@ -45,7 +46,7 @@ val regex = Regex("[a-z0-9_\\-.+]", RegexOption.IGNORE_CASE)
 
 fun import(system: MinimalSystemJson, oldPresets: SwitchyPresets, player: ServerPlayerEntity, command: String) {
     val updatedPresets = hashMapOf<String, SwitchyPreset>()
-    val modules = mutableListOf<Identifier>();
+    val modules = mutableListOf<Identifier>()
     if (oldPresets.modules["switchy"*"drogtor"] == true) modules += "switchy"*"drogtor"
     if (oldPresets.modules["switchy"*"styled_nicknames"] == true) modules += "switchy"*"styled_nicknames"
 
@@ -57,7 +58,7 @@ fun import(system: MinimalSystemJson, oldPresets: SwitchyPresets, player: Server
         val preset = SwitchyPresetImpl(name, mapOf())
         val bio = "${member.pronouns ?: ""} ${system.tag ?: ""}".trim()
         if (oldPresets.modules["switchy"*"drogtor"] == true) {
-            val drogtor = DrogtorCompat()
+            val drogtor = DrogtorModule()
             drogtor.nickname = member.displayName
             drogtor.bio = bio
             drogtor.nameColor = member.color?.closestFormat()
@@ -65,7 +66,7 @@ fun import(system: MinimalSystemJson, oldPresets: SwitchyPresets, player: Server
         }
 
         if (oldPresets.modules["switchy"*"styled_nicknames"] == true) {
-            val styled = StyledNicknamesCompat()
+            val styled = StyledNicknamesModule()
             var nick = member.displayName ?: member.name
             if (bio.isNotEmpty())
                 nick = "<hover:'$bio'>$nick</hover>"
@@ -78,5 +79,6 @@ fun import(system: MinimalSystemJson, oldPresets: SwitchyPresets, player: Server
 
         updatedPresets[name] = preset
     }
-    SwitchyCommands.confirmAndImportPresets(player, updatedPresets, modules, command)
+    SwitchyApi.confirmAndImportPresets(player, updatedPresets, modules, command
+    ) { t -> Feedback.sendMessage(player, t) }
 }
