@@ -46,7 +46,7 @@ object PK {
                         }
                         val membersJson = arrayListOf<MinimalMemberJson>()
                         members.forEach {
-                            membersJson += MinimalMemberJson(it.name, it.displayName, it.pronouns, it.color)
+                            membersJson += MinimalMemberJson(it.name, it.displayName, it.pronouns, it.color, it.proxyTags)
                         }
                         logger.."Importing system for ${player.name} (${player.uuidAsString} from PK API - ${system.id}"
                         import(MinimalSystemJson(system.tag, membersJson.toTypedArray()), oldPresets, player, "pk import")
@@ -54,12 +54,16 @@ object PK {
                 }
                 required(greedyString("link")) {
                     execute {
-                        val oldPresets = switchyPlayer.presets
-                        reply("commands.switchykit.pk.import.wait")
-                        val link = getArgument("link", String::class.java)
-                        val json: MinimalSystemJson = json.decodeFromString(URL(link).readText())
-                        logger.."Importing system for ${player.name} (${player.uuidAsString} from PK Export - $link"
-                        import(json, oldPresets, player, "pk import $link")
+                        try {
+                            val oldPresets = switchyPlayer.presets
+                            reply("commands.switchykit.pk.import.wait")
+                            val link = getArgument("link", String::class.java)
+                            val json: MinimalSystemJson = json.decodeFromString(URL(link).readText())
+                            logger.."Importing system for ${player.name} (${player.uuidAsString} from PK Export - $link"
+                            import(json, oldPresets, player, "pk import $link")
+                        } catch (e: Exception) {
+                            logger..e
+                        }
                     }
                 }
             }

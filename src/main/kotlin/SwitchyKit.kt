@@ -1,5 +1,6 @@
 package de.olivermakesco.switchykit
 
+import de.olivermakesco.switchykit.compat.addTagsModule
 import de.olivermakesco.switchykit.platform.PK
 import de.olivermakesco.switchykit.platform.TUL
 import folk.sisby.switchy.api.SwitchyApi
@@ -49,6 +50,7 @@ fun import(system: MinimalSystemJson, oldPresets: SwitchyPresets, player: Server
     val modules = mutableListOf<Identifier>()
     if (oldPresets.modules["switchy"*"drogtor"] == true) modules += "switchy"*"drogtor"
     if (oldPresets.modules["switchy"*"styled_nicknames"] == true) modules += "switchy"*"styled_nicknames"
+    if (oldPresets.modules["switchy_proxy"*"proxies"] == true) modules += "switchy_proxy"*"proxies"
 
     for (member in system.members) {
         val name = member.name.filter {
@@ -75,6 +77,10 @@ fun import(system: MinimalSystemJson, oldPresets: SwitchyPresets, player: Server
                 nick = "<color:$hex>$nick</color>"
             styled.styled_nickname = nick
             preset.putModule("switchy"*"styled_nicknames", styled)
+        }
+
+        if (oldPresets.modules["switchy_proxy"*"proxies"] == true) {
+            addTagsModule(preset, member.proxyTags)
         }
 
         updatedPresets[name] = preset
