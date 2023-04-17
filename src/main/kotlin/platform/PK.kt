@@ -54,16 +54,12 @@ object PK {
                 }
                 required(greedyString("link")) {
                     execute {
-                        try {
-                            val oldPresets = switchyPlayer.presets
-                            reply("commands.switchykit.pk.import.wait")
-                            val link = getArgument("link", String::class.java)
-                            val json: MinimalSystemJson = json.decodeFromString(URL(link).readText())
-                            logger.."Importing system for ${player.name} (${player.uuidAsString} from PK Export - $link"
-                            import(json, oldPresets, player, "pk import $link")
-                        } catch (e: Exception) {
-                            logger..e
-                        }
+                        val oldPresets = switchyPlayer.presets
+                        reply("commands.switchykit.pk.import.wait")
+                        val link = getArgument("link", String::class.java)
+                        val json: MinimalSystemJson = json.decodeFromString(URL(link).readText())
+                        logger.."Importing system for ${player.name} (${player.uuidAsString} from PK Export - $link"
+                        import(json, oldPresets, player, "pk import $link")
                     }
                 }
             }
