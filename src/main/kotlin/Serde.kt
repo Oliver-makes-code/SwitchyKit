@@ -1,7 +1,6 @@
 package de.olivermakesco.switchykit
 
 import dev.proxyfox.pluralkt.types.PkColor
-import dev.proxyfox.pluralkt.types.PkProxyTag
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
@@ -45,7 +44,13 @@ data class MinimalMemberJson(
     @SerialName("display_name") val displayName: String?,
     val pronouns: String?,
     val color: PkColor?,
-    @SerialName("proxy_tags") val proxyTags: ArrayList<PkProxyTag>
+    @SerialName("proxy_tags") val proxyTags: List<MinimalProxyTag>
+)
+
+@Serializable
+data class MinimalProxyTag(
+    val prefix: String?,
+    val suffix: String?
 )
 
 val json = Json {
