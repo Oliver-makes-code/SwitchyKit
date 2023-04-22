@@ -43,7 +43,14 @@ data class MinimalMemberJson(
     val name: String,
     @SerialName("display_name") val displayName: String?,
     val pronouns: String?,
-    val color: PkColor?
+    val color: PkColor?,
+    @SerialName("proxy_tags") val proxyTags: List<MinimalProxyTag>
+)
+
+@Serializable
+data class MinimalProxyTag(
+    val prefix: String?,
+    val suffix: String?
 )
 
 val json = Json {

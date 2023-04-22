@@ -28,7 +28,8 @@ object TUL {
                                 tupper.name,
                                 tupper.nick,
                                 null,
-                                null
+                                null,
+                                if (!tupper.brackets.isNullOrEmpty()) arrayListOf(MinimalProxyTag(tupper.brackets[0], tupper.brackets[1])) else arrayListOf()
                             ))
                         }
                         logger.."Importing system for ${player.name} (${player.uuidAsString} from Tul Export - $link"
@@ -59,5 +60,5 @@ object TUL {
     }
 
     @Serializable
-    data class MinimalTupperJson(val name: String, val nick: String?, val tag: String?)
+    data class MinimalTupperJson(val name: String, val nick: String?, val tag: String?, val brackets: ArrayList<String>?)
 }

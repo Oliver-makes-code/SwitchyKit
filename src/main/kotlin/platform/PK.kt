@@ -46,7 +46,7 @@ object PK {
                         }
                         val membersJson = arrayListOf<MinimalMemberJson>()
                         members.forEach {
-                            membersJson += MinimalMemberJson(it.name, it.displayName, it.pronouns, it.color)
+                            membersJson += MinimalMemberJson(it.name, it.displayName, it.pronouns, it.color, it.proxyTags.map { tag -> MinimalProxyTag(tag.prefix, tag.suffix) }.toList())
                         }
                         logger.."Importing system for ${player.name} (${player.uuidAsString} from PK API - ${system.id}"
                         import(MinimalSystemJson(system.tag, membersJson.toTypedArray()), oldPresets, player, "pk import")

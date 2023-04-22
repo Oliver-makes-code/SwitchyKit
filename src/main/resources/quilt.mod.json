@@ -43,6 +43,11 @@
 			{
 				"id": "switchy-compat",
 				"versions": ">=2.0.0-"
+			},
+			{
+				"id": "switchy-proxy",
+				"versions": ">=1.1.8",
+				"optional": true
 			}
 		]
 	},
