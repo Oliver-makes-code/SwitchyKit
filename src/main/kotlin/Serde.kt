@@ -19,40 +19,6 @@ class SwitchyKitConfig {
 
 lateinit var config: SwitchyKitConfig
 
-@Serializable
-data class MinimalSystemJson(val tag: String?, val members: Array<MinimalMemberJson> = arrayOf()) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is MinimalSystemJson) return false
-
-        if (tag != other.tag) return false
-        if (!members.contentEquals(other.members)) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = tag.hashCode()
-        result = 31 * result + members.contentHashCode()
-        return result
-    }
-}
-
-@Serializable
-data class MinimalMemberJson(
-    val name: String,
-    @SerialName("display_name") val displayName: String?,
-    val pronouns: String?,
-    val color: PkColor?,
-    @SerialName("proxy_tags") val proxyTags: List<MinimalProxyTag>
-)
-
-@Serializable
-data class MinimalProxyTag(
-    val prefix: String?,
-    val suffix: String?
-)
-
 val json = Json {
     prettyPrint = true
     ignoreUnknownKeys = true

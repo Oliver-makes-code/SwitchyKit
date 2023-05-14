@@ -2,6 +2,9 @@ package de.olivermakesco.switchykit.platform
 
 import com.mojang.brigadier.CommandDispatcher
 import de.olivermakesco.switchykit.*
+import de.olivermakesco.switchykit.data.MinimalMemberJson
+import de.olivermakesco.switchykit.data.MinimalProxyTag
+import de.olivermakesco.switchykit.data.MinimalSystemJson
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import net.minecraft.server.command.ServerCommandSource
@@ -25,6 +28,7 @@ object TUL {
                         val members = arrayListOf<MinimalMemberJson>()
                         for (tupper in tuppers.tuppers) {
                             members.add(MinimalMemberJson(
+                                "tupper",
                                 tupper.name,
                                 tupper.nick,
                                 null,
@@ -35,8 +39,14 @@ object TUL {
                         logger.."Importing system for ${player.name} (${player.uuidAsString} from Tul Export - $link"
                         import(
                             MinimalSystemJson(
-                            null, members.toTypedArray()
-                        ), oldPresets, player, "tul import $link")
+                                null,
+                                members.toTypedArray()
+                            ),
+                            oldPresets,
+                            player,
+                            "tul import $link",
+                            null
+                        )
                     }
                 }
             }

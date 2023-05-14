@@ -1,13 +1,16 @@
 package de.olivermakesco.switchykit
 
-import de.olivermakesco.switchykit.compat.addTagsModule
+import de.olivermakesco.switchykit.compat.Compat
+import de.olivermakesco.switchykit.compat.DrogtorCompat
+import de.olivermakesco.switchykit.compat.StyledNicknamesCompat
+import de.olivermakesco.switchykit.compat.SwitchyProxyCompat
+import de.olivermakesco.switchykit.data.MinimalSystemJson
+import de.olivermakesco.switchykit.data.getById
 import de.olivermakesco.switchykit.platform.PK
 import de.olivermakesco.switchykit.platform.TUL
 import folk.sisby.switchy.api.SwitchyApi
 import folk.sisby.switchy.api.presets.SwitchyPreset
 import folk.sisby.switchy.api.presets.SwitchyPresets
-import folk.sisby.switchy.modules.DrogtorModule
-import folk.sisby.switchy.modules.StyledNicknamesModule
 import folk.sisby.switchy.presets.SwitchyPresetImpl
 import folk.sisby.switchy.util.Feedback
 import net.minecraft.server.network.ServerPlayerEntity
@@ -39,52 +42,41 @@ object SwitchyKit : ModInitializer {
             PK.register(dispatcher)
             TUL.register(dispatcher)
         }
+        Compat += SwitchyProxyCompat
+        Compat += StyledNicknamesCompat
+        Compat += DrogtorCompat
         logger.."SwitchyKit Initialized."
     }
 }
 
 val regex = Regex("[a-z0-9_\\-.+]", RegexOption.IGNORE_CASE)
 
-fun import(system: MinimalSystemJson, oldPresets: SwitchyPresets, player: ServerPlayerEntity, command: String) {
+fun import(system: MinimalSystemJson, oldPresets: SwitchyPresets, player: ServerPlayerEntity, command: String, group: String?) {
     val updatedPresets = hashMapOf<String, SwitchyPreset>()
     val modules = mutableListOf<Identifier>()
-    if (oldPresets.modules["switchy"*"drogtor"] == true) modules += "switchy"*"drogtor"
-    if (oldPresets.modules["switchy"*"styled_nicknames"] == true) modules += "switchy"*"styled_nicknames"
-    if (oldPresets.modules["switchy_proxy"*"proxies"] == true) modules += "switchy_proxy"*"proxies"
+    Compat.modules.forEach {
+        if (oldPresets.modules[it.id] == true) modules += it.id
+    }
 
-    for (member in system.members) {
+    val groupToCheck = group?.let { system.groups.getById(it) }
+
+    system.members.forEach { member ->
+        if (groupToCheck?.members?.contains(member.id) == false) return@forEach
+
         val name = member.name.filter {
             regex.matches("$it")
         }
 
         val preset = SwitchyPresetImpl(name, mapOf())
-        val bio = "${member.pronouns ?: ""} ${system.tag ?: ""}".trim()
-        if (oldPresets.modules["switchy"*"drogtor"] == true) {
-            val drogtor = DrogtorModule()
-            drogtor.nickname = member.displayName
-            drogtor.bio = bio
-            drogtor.nameColor = member.color?.closestFormat()
-            preset.putModule("switchy"*"drogtor", drogtor)
-        }
 
-        if (oldPresets.modules["switchy"*"styled_nicknames"] == true) {
-            val styled = StyledNicknamesModule()
-            var nick = member.displayName ?: member.name
-            if (bio.isNotEmpty())
-                nick = "<hover:'$bio'>$nick</hover>"
-            val hex = member.color?.hex
-            if (!hex.isNullOrEmpty())
-                nick = "<color:$hex>$nick</color>"
-            styled.styled_nickname = nick
-            preset.putModule("switchy"*"styled_nicknames", styled)
-        }
-
-        if (oldPresets.modules["switchy_proxy"*"proxies"] == true) {
-            addTagsModule(preset, member.proxyTags)
+        Compat.getAllActive(modules).forEach {
+            preset.putModule(it.id, it.apply(preset, system, member))
         }
 
         updatedPresets[name] = preset
     }
-    SwitchyApi.confirmAndImportPresets(player, updatedPresets, modules, command
-    ) { t -> Feedback.sendMessage(player, t) }
+
+    SwitchyApi.confirmAndImportPresets(player, updatedPresets, modules, command) { t ->
+        Feedback.sendMessage(player, t)
+    }
 }
