@@ -19,4 +19,10 @@ object Compat {
 
         return out
     }
+
+    fun addDefault() {
+        Compat += SwitchyProxyCompat
+        Compat += StyledNicknamesCompat
+        Compat += DrogtorCompat
+    }
 }

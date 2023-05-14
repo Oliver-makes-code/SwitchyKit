@@ -42,9 +42,7 @@ object SwitchyKit : ModInitializer {
             PK.register(dispatcher)
             TUL.register(dispatcher)
         }
-        Compat += SwitchyProxyCompat
-        Compat += StyledNicknamesCompat
-        Compat += DrogtorCompat
+        Compat.addDefault()
         logger.."SwitchyKit Initialized."
     }
 }
